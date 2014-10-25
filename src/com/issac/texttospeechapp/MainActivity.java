@@ -1,4 +1,9 @@
-package com.example.texttospeechapp;
+package com.issac.texttospeechapp;
+
+import java.util.ArrayList;
+
+import com.example.texttospeechapp.R;
+import com.issac.texttospeechapp.adapters.CustomListAdapter;
 
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
@@ -16,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
@@ -112,7 +118,8 @@ public class MainActivity extends ActionBarActivity
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-
+        ArrayList<String> listData = new ArrayList<String>();
+        
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -132,6 +139,11 @@ public class MainActivity extends ActionBarActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            listData.add("SAMPLE DATA SAMPLE DATA 1");
+            listData.add("SAMPLE DATA SAMPLE DATA 2");
+            ListView list = (ListView)rootView.findViewById(R.id.readTextList);
+            CustomListAdapter adapter = new CustomListAdapter(getActivity(),listData.toArray(new String[listData.size()]));
+            list.setAdapter(adapter);
             return rootView;
         }
 

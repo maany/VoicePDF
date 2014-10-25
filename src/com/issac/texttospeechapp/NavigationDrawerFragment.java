@@ -1,4 +1,6 @@
-package com.example.texttospeechapp;
+package com.issac.texttospeechapp;
+
+import com.example.texttospeechapp.R;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;

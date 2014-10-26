@@ -1360,8 +1360,8 @@ containing a value of this type.
         public static final int progress_circular=0x7f060029;
         public static final int progress_horizontal=0x7f06002a;
         public static final int radio=0x7f060041;
-        public static final int read=0x7f060054;
         public static final int readButton=0x7f060056;
+        public static final int readPDFButton=0x7f060054;
         public static final int readTextList=0x7f060051;
         public static final int right=0x7f060007;
         public static final int search_badge=0x7f060044;

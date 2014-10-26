@@ -320,8 +320,8 @@ int id pdfViewer 0x7f060053
 int id progress_circular 0x7f060029
 int id progress_horizontal 0x7f06002a
 int id radio 0x7f060041
-int id read 0x7f060054
 int id readButton 0x7f060056
+int id readPDFButton 0x7f060054
 int id readTextList 0x7f060051
 int id right 0x7f060007
 int id search_badge 0x7f060044

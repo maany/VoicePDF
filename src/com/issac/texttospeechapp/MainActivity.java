@@ -3,6 +3,7 @@ package com.issac.texttospeechapp;
 import java.util.ArrayList;
 
 import com.example.texttospeechapp.R;
+import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.issac.texttospeechapp.adapters.CustomListAdapter;
 
 import android.app.Activity;
@@ -11,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -20,9 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
+
 
 
 public class MainActivity extends ActionBarActivity
@@ -166,13 +167,13 @@ public class MainActivity extends ActionBarActivity
         }
     }
 /**
- * 
+ *  PDF Management Class
  * @author MAYANK
  *
  */
     public static class PDFModeFragment extends Fragment {
     	private static final String ARG_SECTION_NUMBER = "section_number";
-        
+    	private static final int REQUEST_CHOOSER = 1234;
         
         /**
          * Returns a new instance of this fragment for the given section
@@ -193,7 +194,19 @@ public class MainActivity extends ActionBarActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
         	View rootView = inflater.inflate(R.layout.fragment_pdf, container, false);
-        	
+        	EditText pdfViewRegion = (EditText) rootView.findViewById(R.id.pdfViewer);
+        	Button readPDFButton = (Button) rootView.findViewById(R.id.readPDFButton);
+        	readPDFButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent getContentIntent = FileUtils.createGetContentIntent();
+
+				    Intent intent = Intent.createChooser(getContentIntent, "Select a file");
+				    startActivityForResult(intent, REQUEST_CHOOSER); 
+					
+				}
+			});
         	return rootView;
         }
     }

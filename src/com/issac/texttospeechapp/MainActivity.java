@@ -54,12 +54,23 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
+	public void onNavigationDrawerItemSelected(int position) {
+		// update the main content by replacing fragments
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		if (position == 0 || position==2) {
+			fragmentManager
+					.beginTransaction()
+					.replace(R.id.container,
+							PlaceholderFragment.newInstance(position))
+        .commit();
+        } else if (position==1) {
+			fragmentManager
+					.beginTransaction()
+					.replace(R.id.container,
+							PDFModeFragment.newInstance(position))
+					.commit();
+		}
+		
     }
 
     public void onSectionAttached(int number) {
@@ -154,5 +165,36 @@ public class MainActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
+/**
+ * 
+ * @author MAYANK
+ *
+ */
+    public static class PDFModeFragment extends Fragment {
+    	private static final String ARG_SECTION_NUMBER = "section_number";
+        
+        
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PDFModeFragment newInstance(int sectionNumber) {
+            PDFModeFragment fragment = new PDFModeFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
 
+        public PDFModeFragment() {
+        }
+        
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+        	View rootView = inflater.inflate(R.layout.fragment_pdf, container, false);
+        	
+        	return rootView;
+        }
+    }
 }

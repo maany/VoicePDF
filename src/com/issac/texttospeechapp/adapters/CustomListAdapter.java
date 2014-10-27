@@ -1,6 +1,9 @@
 package com.issac.texttospeechapp.adapters;
 
 import com.example.texttospeechapp.R;
+import com.issac.texttospeechapp.MainActivity;
+import com.issac.texttospeechapp.speech.Speaker;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +29,19 @@ public class CustomListAdapter extends ArrayAdapter<String> {
 		View rowView = inflater.inflate(R.layout.text_list,parent,false);
 		Button read = (Button) rowView.findViewById(R.id.readButton);
 		Button stop = (Button) rowView.findViewById(R.id.stopButton);
-		EditText text = (EditText) rowView.findViewById(R.id.inputTextField);
+		final EditText text = (EditText) rowView.findViewById(R.id.inputTextField);
 		text.setText("Insert At position : "  + position);
 		
+		read.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Speaker speaker =MainActivity.speaker;
+				String speakText = text.getText().toString();
+				speaker.speakFresh(speakText);
+				
+			}
+		});
 		return rowView;
 	}
 

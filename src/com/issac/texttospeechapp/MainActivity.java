@@ -1,20 +1,27 @@
 package com.issac.texttospeechapp;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import com.example.texttospeechapp.R;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.issac.texttospeechapp.adapters.CustomListAdapter;
+import com.issac.texttospeechapp.pdf.PDFReader;
+import com.issac.texttospeechapp.speech.Speaker;
 
 import android.app.Activity;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,11 +46,12 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
+    public static Speaker speaker = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -52,6 +60,8 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        
+        speaker = new Speaker(this);
     }
 
     @Override
@@ -68,7 +78,7 @@ public class MainActivity extends ActionBarActivity
 			fragmentManager
 					.beginTransaction()
 					.replace(R.id.container,
-							PDFModeFragment.newInstance(position))
+							PDFModeFragment.newInstance(position,MainActivity.this))
 					.commit();
 		}
 		
@@ -174,27 +184,32 @@ public class MainActivity extends ActionBarActivity
     public static class PDFModeFragment extends Fragment {
     	private static final String ARG_SECTION_NUMBER = "section_number";
     	private static final int REQUEST_CHOOSER = 1234;
+    	private MainActivity mainActivity;
+    	private EditText pdfViewRegion;
         
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PDFModeFragment newInstance(int sectionNumber) {
-            PDFModeFragment fragment = new PDFModeFragment();
+        public static PDFModeFragment newInstance(int sectionNumber,MainActivity mainActivity) {
+            PDFModeFragment fragment = new PDFModeFragment(mainActivity);
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
+            
+            
             return fragment;
         }
 
-        public PDFModeFragment() {
+        public PDFModeFragment(MainActivity mainActivity) {
+        	this.mainActivity = mainActivity;
         }
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
         	View rootView = inflater.inflate(R.layout.fragment_pdf, container, false);
-        	EditText pdfViewRegion = (EditText) rootView.findViewById(R.id.pdfViewer);
+        	pdfViewRegion = (EditText) rootView.findViewById(R.id.pdfViewer);
         	Button readPDFButton = (Button) rootView.findViewById(R.id.readPDFButton);
         	readPDFButton.setOnClickListener(new View.OnClickListener() {
 				
@@ -209,5 +224,65 @@ public class MainActivity extends ActionBarActivity
 			});
         	return rootView;
         }
+
+		@Override
+		public void onActivityResult(int requestCode, int resultCode,
+				Intent data) {
+			switch (requestCode) {
+	        case REQUEST_CHOOSER:   
+	            if (resultCode == RESULT_OK) {
+
+	                final Uri uri = data.getData();
+
+	                // Get the File path from the Uri
+	                String path = FileUtils.getPath(mainActivity, uri);
+	                pdfViewRegion.setText(path);
+	                // Alternatively, use FileUtils.getFile(Context, Uri)
+	               
+	                if (path != null && FileUtils.isLocal(path)) {
+	                    File file = new File(path);
+	                    // code to read pdf
+	                    try {
+	                    PDFReader reader = new PDFReader(mainActivity);
+	                    PrintWriter out = reader.setPDF(file.getAbsolutePath(), 1, 2);
+	                   // pdfViewRegion.setText(out.toString());
+	                    } catch(Exception ex) {
+	                    	Log.e(mainActivity.getClass().getName(), "FAILED TO READ PDF" + ex.getMessage());
+	                    }
+	                }
+	               
+	            }
+	            break;
+	    }
+		}
+          
+        
     }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onPause(){
+       
+    	if(speaker !=null){
+          TextToSpeech tts = speaker.getTts();
+    	  if(tts!=null) { 
+          tts.stop();
+          tts.shutdown();
+    	  }
+       }
+    	super.onPause();
+    }
+	public static Speaker getSpeaker() {
+		return speaker;
+	}
+
+	public static void setSpeaker(Speaker speaker) {
+		MainActivity.speaker = speaker;
+	}
+    
+    
 }

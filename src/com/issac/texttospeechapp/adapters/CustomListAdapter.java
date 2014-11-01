@@ -36,10 +36,23 @@ public class CustomListAdapter extends ArrayAdapter<String> {
 			
 			@Override
 			public void onClick(View v) {
-				Speaker speaker =MainActivity.speaker;
+				Speaker speaker =MainActivity.getSpeaker();
 				String speakText = text.getText().toString();
 				speaker.speakFresh(speakText);
 				
+			}
+		});
+		
+		stop.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Speaker speaker = MainActivity.getSpeaker();
+				if(speaker!=null)
+				{
+					speaker.stop();
+					
+				}
 			}
 		});
 		return rowView;

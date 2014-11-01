@@ -8,6 +8,7 @@ import com.example.texttospeechapp.R;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.issac.texttospeechapp.adapters.CustomListAdapter;
 import com.issac.texttospeechapp.pdf.PDFReader;
+import com.issac.texttospeechapp.pdf.PDFStripper;
 import com.issac.texttospeechapp.speech.Speaker;
 
 import android.app.Activity;
@@ -241,10 +242,13 @@ public class MainActivity extends ActionBarActivity
 	               
 	                if (path != null && FileUtils.isLocal(path)) {
 	                    File file = new File(path);
+	                    
 	                    // code to read pdf
 	                    try {
-	                    
-	                   // pdfViewRegion.setText(out.toString());
+	                    	PDFStripper stripper = new PDFStripper(mainActivity);
+	                    	StringBuilder builder  = stripper.stripText(path, 0, 1);
+	                    	
+	                        pdfViewRegion.setText(builder.toString());
 	                    } catch(Exception ex) {
 	                    	Log.e(mainActivity.getClass().getName(), "FAILED TO READ PDF" + ex.getMessage());
 	                    }

@@ -6,5 +6,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="libs/pdfbox-app-1.8.7.jar"/>
+	<classpathentry kind="lib" path="libs/qoppapdf.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

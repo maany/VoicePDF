@@ -30,7 +30,7 @@ public class CustomListAdapter extends ArrayAdapter<String> {
 		Button read = (Button) rowView.findViewById(R.id.readButton);
 		Button stop = (Button) rowView.findViewById(R.id.stopButton);
 		final EditText text = (EditText) rowView.findViewById(R.id.inputTextField);
-		text.setText("Insert At position : "  + position);
+		text.setText("Insert At position : "  + position+" haha");
 		
 		read.setOnClickListener(new View.OnClickListener() {
 			

@@ -243,8 +243,7 @@ public class MainActivity extends ActionBarActivity
 	                    File file = new File(path);
 	                    // code to read pdf
 	                    try {
-	                    PDFReader reader = new PDFReader(mainActivity);
-	                    PrintWriter out = reader.setPDF(file.getAbsolutePath(), 1, 2);
+	                    
 	                   // pdfViewRegion.setText(out.toString());
 	                    } catch(Exception ex) {
 	                    	Log.e(mainActivity.getClass().getName(), "FAILED TO READ PDF" + ex.getMessage());

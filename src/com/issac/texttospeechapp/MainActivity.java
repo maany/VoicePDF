@@ -8,9 +8,7 @@ import com.example.texttospeechapp.R;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.issac.texttospeechapp.adapters.CustomListAdapter;
 import com.issac.texttospeechapp.pdf.PDFReader;
-import com.issac.texttospeechapp.pdf.PDFTextExtracter;
 import com.issac.texttospeechapp.speech.Speaker;
-import com.qoppa.android.pdfViewer.fonts.StandardFontTF;
 
 import android.app.Activity;
 import android.speech.tts.TextToSpeech;
@@ -48,7 +46,7 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
-    private static Speaker speaker = null;
+    public static Speaker speaker = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -245,14 +243,9 @@ public class MainActivity extends ActionBarActivity
 	                    File file = new File(path);
 	                    // code to read pdf
 	                    try {
-	                 // PDFReader reader = new PDFReader(mainActivity);
-	                  // PrintWriter out = reader.setPDF(file.getAbsolutePath(), 1, 2);
-	                 //  pdfViewRegion.setText(out.toString());
-	                  StandardFontTF.mAssetMgr = mainActivity.getAssets();
-	                  PDFTextExtracter reader = new PDFTextExtracter(mainActivity);
-	                  Log.d(mainActivity.getClass().getName(),"Loading PDF from path : " + file.getPath());
-	                  String text = reader.loadTextFromPDF(file.getPath(), 0, 0);
-	                  pdfViewRegion.setText(text);
+	                    PDFReader reader = new PDFReader(mainActivity);
+	                    PrintWriter out = reader.setPDF(file.getAbsolutePath(), 1, 2);
+	                   // pdfViewRegion.setText(out.toString());
 	                    } catch(Exception ex) {
 	                    	Log.e(mainActivity.getClass().getName(), "FAILED TO READ PDF" + ex.getMessage());
 	                    }
